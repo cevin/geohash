@@ -31,7 +31,6 @@ class Geohash {
 		$this->borders['left']['odd'] = $this->borders['bottom']['even'];
 		$this->borders['right']['odd'] = $this->borders['top']['even'];
 		
-		//build map from encoding char to 0 padded bitfield
 		for($i=0; $i<32; $i++) {
 		
 			$this->codingMap[substr($this->coding, $i, 1)] = str_pad(decbin($i), 5, "0", STR_PAD_LEFT);
@@ -39,13 +38,8 @@ class Geohash {
 		
 	}
 	
-	/**
-	* Decode a geohash and return an array with decimal lat,long in it
-	* Author: Bruce Chen (weibo: @一个开发者)
-	*/
 	public function decode($hash) {
 	
-		//decode hash into binary string
 		$binary = "";
 		$hl = strlen($hash);
 		for ($i=0; $i<$hl; $i++) {
@@ -53,7 +47,6 @@ class Geohash {
 			$binary .= $this->codingMap[substr($hash, $i, 1)];
 		}
 		
-		//split the binary into lat and log binary strings
 		$bl = strlen($binary);
 		$blat = "";
 		$blong = "";
@@ -66,20 +59,15 @@ class Geohash {
 			
 		}
 		
-		//now concert to decimal
 		$lat = $this->binDecode($blat, -90, 90);
 		$long = $this->binDecode($blong, -180, 180);
 		
-		//figure out how precise the bit count makes this calculation
 		$latErr = $this->calcError(strlen($blat), -90, 90);
 		$longErr = $this->calcError(strlen($blong), -180, 180);
-				
-		//how many decimal places should we use? There's a little art to
-		//this to ensure I get the same roundings as geohash.org
+
 		$latPlaces = max(1, -round(log10($latErr))) - 1;
 		$longPlaces = max(1, -round(log10($longErr))) - 1;
 		
-		//round it
 		$lat = round($lat, $latPlaces);
 		$long = round($long, $longPlaces);
 
@@ -121,14 +109,8 @@ class Geohash {
 	}
 
 
-	
-	/**
-	* Encode a hash from given lat and long
-	* Author: Bruce Chen (weibo: @一个开发者)
-	*/
 	public function encode($lat, $long) {
 	
-		//how many bits does latitude need?	
 		$plat = $this->precision($lat);
 		$latbits = 1;
 		$err = 45;
@@ -138,7 +120,6 @@ class Geohash {
 			$err /= 2;
 		}
 		
-		//how many bits does longitude need?
 		$plong = $this->precision($long);
 		$longbits = 1;
 		$err = 90;
@@ -148,12 +129,8 @@ class Geohash {
 			$err /= 2;
 		}
 		
-		//bit counts need to be equal
 		$bits = max($latbits, $longbits);
 		
-		//as the hash create bits in groups of 5, lets not
-		//waste any bits - lets bulk it up to a multiple of 5
-		//and favour the longitude for any odd bits
 		$longbits = $bits;
 		$latbits = $bits;
 		$addlong = 1;
@@ -165,11 +142,9 @@ class Geohash {
 		}
 		
 		
-		//encode each as binary string
 		$blat = $this->binEncode($lat, -90, 90, $latbits);
 		$blong = $this->binEncode($long, -180, 180, $longbits);
 		
-		//merge lat and long together
 		$binary = "";
 		$uselong = 1;
 		while (strlen($blat) + strlen($blong)) {
@@ -188,7 +163,6 @@ class Geohash {
 			$uselong = !$uselong;
 		}
 		
-		//convert binary string to hash
 		$hash = "";
 		for ($i=0; $i<strlen($binary); $i+=5) {
 		
@@ -199,9 +173,6 @@ class Geohash {
 		return $hash;
 	}
 	
-	/**
-	* What's the maximum error for $bits bits covering a range $min to $max
-	*/
 	private function calcError($bits, $min, $max) {
 	
 		$err = ($max - $min) / 2;
@@ -210,14 +181,6 @@ class Geohash {
 		return $err;
 	}
 	
-	/*
-	* returns precision of number
-	* precision of 42 is 0.5
-	* precision of 42.4 is 0.05
-	* precision of 42.41 is 0.005 etc
-	*
-	* Author: Bruce Chen (weibo: @一个开发者)
-	*/
 	private function precision($number) {
 	
 		$precision = 0;
@@ -231,21 +194,11 @@ class Geohash {
 	}
 	
 	
-	/**
-	* create binary encoding of number as detailed in http://en.wikipedia.org/wiki/Geohash#Example
-	* removing the tail recursion is left an exercise for the reader
-	* 
-	* Author: Bruce Chen (weibo: @一个开发者)
-	*/
 	private function binEncode($number, $min, $max, $bitcount) {
 	
 		if ($bitcount == 0)
 			return "";
 		
-		#echo "$bitcount: $min $max<br>";
-			
-		//this is our mid point - we will produce a bit to say
-		//whether $number is above or below this mid point
 		$mid = ($min + $max) / 2;
 		if ($number > $mid)
 			return "1" . $this->binEncode($number, $mid, $max, $bitcount - 1);
@@ -254,12 +207,6 @@ class Geohash {
 	}
 	
 
-	/**
-	* decodes binary encoding of number as detailed in http://en.wikipedia.org/wiki/Geohash#Example
-	* removing the tail recursion is left an exercise for the reader
-	* 
-	* Author: Bruce Chen (weibo: @一个开发者)
-	*/
 	private function binDecode($binary, $min, $max) {
 	
 		$mid = ($min + $max) / 2;
