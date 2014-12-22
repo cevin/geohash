@@ -15,6 +15,8 @@ $box[] = substr($hash,0,$length);
 
 $in_str = "'".implode("','", $box)."'";
 
-// MYSQL
-// SELECT FROM `table` WHERE LEFT(geohash, $length) IN ($in_str)
+// PHP
+// $sql = "SELECT FROM `table` WHERE LEFT(geohash, {$length}) IN ($in_str)";
+
+// OUTPUT
 // SELECT FROM `table` WHERE LEFT(geohash, 6) IN ('xxxxxx','aaaaaa', ......)
