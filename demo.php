@@ -6,11 +6,11 @@ $length = 6;
 
 $geohash = new Geohash();
 
-$hash = $geohash->encode('latitude','longtitude');
+$hash = substr($geohash->encode('latitude','longitude'), 0, $length);
 
-$box = $geohash->neighbors(substr($hash,0,$length));
+$box = $geohash->neighbors($hash);
 
-$box[] = substr($hash,0,$length);
+$box[] = $hash;
 
 
 $in_str = "'".implode("','", $box)."'";
