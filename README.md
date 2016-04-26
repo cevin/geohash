@@ -5,4 +5,4 @@ geohash
 LINK: http://en.wikipedia.org/wiki/Geohash
 
 #Oneline Demo
-http://cevin.me/geohash
+http://cevin.net/geohash
