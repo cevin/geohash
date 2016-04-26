@@ -1,6 +1,8 @@
 <?php
 
-include_once 'geohash.class.php';
+require_once __DIR__.'/../src/Geohash.php';
+
+use Cevin\Geohash;
 
 $length = 6;
 
@@ -17,6 +19,7 @@ $in_str = "'".implode("','", $box)."'";
 
 // PHP
 // $sql = "SELECT FROM `table` WHERE LEFT(geohash, {$length}) IN ($in_str)";
+// echo $sql;
 
 // OUTPUT
 // SELECT FROM `table` WHERE LEFT(geohash, 6) IN ('xxxxxx','aaaaaa', ......)

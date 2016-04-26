@@ -1,0 +1,24 @@
+{
+    "name": "cevin/geohash",
+    "type": "library",
+    "description": "Geohash library for php",
+    "keywords": ["geohash"],
+    "homepage": "https://github.com/cevin/geohash",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "cevin",
+            "email": "cevin.cheung@gmail.com",
+            "homepage": "http://cevin.net",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Cevin": "src"
+        }
+    }
+}
