@@ -2,7 +2,7 @@
     "name": "cevin/geohash",
     "type": "library",
     "description": "Geohash library for php",
-    "keywords": ["geohash"],
+    "keywords": ["geohash","geocoding"],
     "homepage": "https://github.com/cevin/geohash",
     "license": "MIT",
     "authors": [
