@@ -1,13 +1,13 @@
 geohash
 =======
 
-### what's GeoHash
+What's GeoHash
+---
+
 LINK: http://en.wikipedia.org/wiki/Geohash
 
-### Online Demo
-http://cevin.net/geohash
-
-### Usage
+Usage
+---
 
 
 ```php
@@ -32,3 +32,8 @@ $in_str = "'".implode("','", $box)."'";
 // OUTPUT
 // SELECT FROM `table` WHERE LEFT(geohash, 6) IN ('xxxxxx','aaaaaa', ......)
 ```
+
+License
+---
+
+[Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)
